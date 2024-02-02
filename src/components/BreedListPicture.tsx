@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import { Paper, Typography, Card, CardContent, CardMedia, CardActionArea, CardActions, Button } from '@mui/material';
+import { Paper, Typography, Card, CardContent, CardMedia, CardActionArea, CardActions, Button, CircularProgress } from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { useRouter } from 'next/navigation';
@@ -21,6 +21,7 @@ const BreedPage: React.FC<BreedPageProps> = ({ }) => {
 
   const [images, setImages] = useState<string[]>([]);
   const [likedImages, setLikedImages] = useState<string[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -40,8 +41,10 @@ const BreedPage: React.FC<BreedPageProps> = ({ }) => {
         const response = await axios.get(`https://dog.ceo/api/breed/${breed}/images`);
         console.log('test', response.data.message)
         setImages(response.data.message);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching breed images', error);
+        setLoading(false);
       }
     };
 
@@ -90,7 +93,11 @@ const BreedPage: React.FC<BreedPageProps> = ({ }) => {
 
 
               </div>
-              {_.isEmpty(images) ? <div>
+              
+              {isLoading ? 
+              <CircularProgress/> :
+              
+              _.isEmpty(images) ? <div>
                 <Typography variant='h3'>Furr Not Found! 🐾
                   <br />Looks like the doggy data has gone for a walk.
                   <br />Time to fetch another tail-wagging friend. 🐶🔍</Typography>
