@@ -1,8 +1,8 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import favoritesReducer from './slices/favoritesSlice';
+import likedImagesReducer from './slices/likedImageSlice'
 
 const rootReducer = combineReducers({
-  favorites: favoritesReducer,
+  likedImages: likedImagesReducer,
 });
 
 const store = configureStore({
